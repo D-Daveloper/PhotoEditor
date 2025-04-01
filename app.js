@@ -12,7 +12,9 @@ app.use(express.json());
 // Define the CORS options
 const corsOptions = {
   credentials: true,
-  origin: ["*"] // Whitelist the domains you want to allow
+  origin: ["http://localhost:3000"], // Whitelist the domains you want to allow
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
 };
 
 app.use(cors(corsOptions)); // Use the cors middleware with your options
