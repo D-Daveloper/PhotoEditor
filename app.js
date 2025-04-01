@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
+const cors = require('cors'); // Import the cors package
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -8,6 +9,13 @@ const photoEditorRoute = require("./routes/uploadRoute");
 
 // Middleware to parse JSON
 app.use(express.json());
+// Define the CORS options
+const corsOptions = {
+  credentials: true,
+  origin: ["*"] // Whitelist the domains you want to allow
+};
+
+app.use(cors(corsOptions)); // Use the cors middleware with your options
 
 app.use("/api/v1",photoEditorRoute);
 

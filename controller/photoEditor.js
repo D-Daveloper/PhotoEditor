@@ -31,7 +31,9 @@ const removeBackground = async (req, res) => {
     res.json({ url: result.secure_url });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to remove background" });
+    res
+      .status(500)
+      .json({ error: `Failed to remove background, ${error.message}` });
   }
 };
 
@@ -67,7 +69,9 @@ const replaceBackground = async (req, res) => {
     res.json({ url: result.secure_url });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Failed to replace background" });
+    res
+      .status(500)
+      .json({ error: `Failed to replace background, ${error.message}` });
   }
 };
 
@@ -88,7 +92,9 @@ const applyEhance = async (req, res) => {
     res.json({ url: result.secure_url });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to enhance image" });
+    res
+      .status(500)
+      .json({ error: `Failed to enhance image, ${error.message}` });
   }
 };
 
@@ -97,7 +103,7 @@ const retouch = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "Image required" });
     console.log("status", status);
-    
+
     const options =
       status === "development"
         ? {
@@ -121,7 +127,9 @@ const retouch = async (req, res) => {
     res.json({ url: result.secure_url });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to retouch image" });
+    res
+      .status(500)
+      .json({ error: `Failed to retouch image, ${error.message}` });
   }
 };
 
@@ -139,7 +147,7 @@ const expand = async (req, res) => {
     });
     res.json({ url: result.secure_url });
   } catch (error) {
-    res.status(500).json({ error: "Failed to expand image" });
+    res.status(500).json({ error: `Failed to expand image, ${error.message}` });
   }
 };
 
@@ -149,7 +157,7 @@ const applyEffect = async (req, res) => {
     const { effect, intensity } = req.body;
     if (!req.file || !effect)
       return res.status(400).json({ error: "Image and effect required" });
-    
+
     const transformations = {
       cinematic: { effect: "art:zorro", contrast: 20 },
       golden_hour: { effect: "art:al_dente", warmth: 30 },
@@ -164,13 +172,12 @@ const applyEffect = async (req, res) => {
     if (intensity) transformation.effect += `:${intensity}`;
 
     const result = await uploadStream(req.file.buffer, { transformation });
-    
+
     res.json({ url: result.secure_url });
   } catch (error) {
-    res.status(500).json({ error: "Failed to apply effect" });
+    res.status(500).json({ error: `Failed to apply effect, ${error.message}` });
   }
 };
-
 
 // Apply art style to an image
 const applyArtStlye = async (req, res) => {
@@ -178,12 +185,20 @@ const applyArtStlye = async (req, res) => {
     const { style, intensity } = req.body;
     if (!req.file || !style)
       return res.status(400).json({ error: "Image and style required" });
+    if(style === "glitch"){
+        const transformation = [
+            {effect: "pixelate:10"},
+            {adjust: "distort:20:20:20:0:0:20:0:0"},
+            {effect: "art:audrey"},
+        ];
+        const result = await uploadStream(req.file.buffer, { transformation });
+        return res.json({ url: result.secure_url });
+    }
     const styles = {
       oil_painting: "art:zorro",
-      sketch: "art:pencil",
-      pixel_art: "art:pixelate",
+      sketch: "cartoonify",
+      pixel_art: "pixelate",
       watercolor: "art:aurora",
-      glitch: "art:glitch",
       dreamscape: "art:athena",
     };
     const effect = styles[style] || "art:improve";
@@ -193,7 +208,9 @@ const applyArtStlye = async (req, res) => {
     const result = await uploadStream(req.file.buffer, { transformation });
     res.json({ url: result.secure_url });
   } catch (error) {
-    res.status(500).json({ error: "Failed to apply art style" });
+    res
+      .status(500)
+      .json({ error: `Failed to apply art style, ${error.message}` });
   }
 };
 module.exports = {

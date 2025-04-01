@@ -50,8 +50,8 @@ const upload = multer({
 // Define the upload route
 router.post("/upload", upload.single("image"),checkFileUpload, testUpload);
 router.post("/removeBg", upload.single("image"),checkFileUpload, removeBackground);
-router.post("/applyEhance", upload.single("image"),checkFileUpload, applyEhance);
 router.post("/replaceBg", upload.fields([{ name: 'image' }, { name: 'background' }]),checkFileUpload, replaceBackground);
+router.post("/applyEhance", upload.single("image"),checkFileUpload, applyEhance);
 router.post("/retouch", upload.single("image"),checkFileUpload,retouch);
 router.post("/expand", upload.single("image"),checkFileUpload,expand);
 router.post("/applyEffect", upload.single("image"),checkFileUpload,applyEffect);
