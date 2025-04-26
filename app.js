@@ -10,14 +10,14 @@ const photoEditorRoute = require("./routes/uploadRoute");
 // Middleware to parse JSON
 app.use(express.json());
 // Define the CORS options
-const corsOptions = {
-  credentials: true,
-  origin: ["http://localhost:3000"], // Whitelist the domains you want to allow
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-};
+// const corsOptions = {
+//   credentials: true,
+//   origin: ["http://localhost:3000"], // Whitelist the domains you want to allow
+//   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+//   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+// };
 
-app.use(cors(corsOptions)); // Use the cors middleware with your options
+app.use(cors()); // Use the cors middleware with your options
 
 app.use("/api/v1",photoEditorRoute);
 
